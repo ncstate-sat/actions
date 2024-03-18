@@ -1,0 +1,19 @@
+name: Slack Channel Notification
+
+inputs:
+    channel-id:
+        required: true
+        description: "Slack channel to send message to"
+    message:
+        required: true
+        description: "Message to send to Slack channel"
+
+runs:
+    using: "composite"
+    steps:
+        - name: Send Slack message
+          uses: slackapi/slack-github-action@v1.22.0
+          if: ${{ env.SLACK_UPDATES=='true' && !env.ACT }}
+          with:
+              channel-id: ${{ inputs.channel-id }}
+              slack-message: "${{ inputs.message }}"

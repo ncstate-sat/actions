@@ -1,0 +1,13 @@
+# https://stackoverflow.com/questions/70483902/how-to-actually-clean-up-the-repository-on-self-hosted-runner-after-github-actio
+# Clean the working directory
+
+name: Clean Work Directory 
+    
+runs:
+  using: "composite"
+  steps:
+    - name: delete-files
+      shell: bash
+      run: |
+        rm -rf ./* || true
+        rm -rf ./.??* || true

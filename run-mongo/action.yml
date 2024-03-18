@@ -1,0 +1,30 @@
+# Executes a mongo container
+
+name: Run a specified version of mongo
+description: "A composite action that runs a specified version of mongo"
+inputs:
+  tag:
+    description: The mongo version tag to run
+    required: true
+  port:
+    description: The port to run mongo on
+    required: true
+  
+runs:
+  using: "composite"
+  steps:
+    - name: What's my connection
+      shell: bash
+      run: |
+        echo "TAG: ${{ inputs.tag }}"
+        echo "PORT: ${{ inputs.port }}"
+    - name: cleanup any running containers
+      shell: bash
+      run: |
+        if [ "$(docker ps -a -f status=running -q)" ]; then
+            sudo docker stop $(docker ps -a -f status=running -q)
+        fi
+    - name: start mongo
+      shell: bash
+      run: |
+        sudo docker run -d -p ${{ inputs.port }}:27017 mongo:${{ inputs.tag }}

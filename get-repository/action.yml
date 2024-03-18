@@ -1,0 +1,13 @@
+# Gets the repository name and sets it as a github environment variable 
+# that can be used in the action flow 
+
+name: Get Repository Name 
+    
+runs:
+  using: "composite"
+  steps:
+    - name: Set variable
+      env:
+        repository: ${{ github.repository }}
+      shell: bash
+      run: echo "GITHUB_REPO=$(echo $repository | tr -d 'SAT/')" >> $GITHUB_ENV
